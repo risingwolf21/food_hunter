@@ -248,8 +248,6 @@ export function parseGeoapifyPlaceDetails(json: unknown): PlaceDetail | null {
         description: p.facilities?.wheelchair_details?.description ?? null,
       }
 
-  console.log(wheelchair)
-
   const amenities = [
     { label: "WLAN", active: p.facilities?.internet_access === true },
     { label: "Außenbereich", active: p.facilities?.outdoor_seating === true },

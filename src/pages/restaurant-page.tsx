@@ -147,7 +147,7 @@ export function RestaurantPage() {
                                                 Öffnungszeiten
                                             </p>
                                             {
-                                                JSON.stringify(restaurant.opening_hours)
+                                                JSON.stringify(restaurant.opening_hours.values())
                                             }
                                         </div>
                                     </div>

@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate, createHashRouter } from 'react-router-dom'
 import { useAuth } from './contexts/auth-context'
 import { LoginPage } from './pages/auth/login-page'
 import { RegisterPage } from './pages/auth/register-page'
@@ -27,7 +27,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Navigate to="/map" replace />,
@@ -75,7 +75,9 @@ const router = createBrowserRouter([
     path: '*',
     element: <NotFoundPage />,
   },
-])
+], {
+  basename: "/food_hunter"
+})
 
 export function App() {
   return <RouterProvider router={router} />

@@ -25,8 +25,6 @@ export const useRestaurant = (placeId: string) => useQuery({
     queryFn: async () => {
         const result = await fetchRestaurant(placeId)
 
-        console.log(result)
-
         return result
     }
 });

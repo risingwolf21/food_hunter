@@ -5,18 +5,17 @@ import { cn } from "@/lib/utils"
 
 const TABS = [
     {
-        to: "/map",
+        to: "map",
         label: "Karte",
-        icon: Map,
-        end: true
+        icon: Map
     },
     { 
-        to: "/list", 
+        to: "list", 
         label: "Liste", 
         icon: List 
     },
     { 
-        to: "/profile", 
+        to: "profile", 
         label: "Profil", 
         icon: User 
     },
@@ -31,12 +30,12 @@ export const BottomNav = () => {
             style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
             <div className="mx-auto flex w-full max-w-md">
-                {TABS.map(({ to, label, icon: Icon, end }) => (
+                {TABS.map(({ to, label, icon: Icon }) => (
                     <Toolbar.Link
                         key={to}
                         className="flex-1"
                         render={
-                            <NavLink to={to} end={end}>
+                            <NavLink to={to}>
                                 {({ isActive }) => (
                                     <span
                                         className={cn(

@@ -1,5 +1,5 @@
 import { AppBar } from "@/components/ui/appbar";
-import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/contexts/auth-context";
 import { RestaurantCard } from "@/features/restaurants/RestaurantCard";
 import { useHomeLocation } from "@/features/restaurants/useHomeLocation";
@@ -7,15 +7,16 @@ import { useNearbyRestaurants } from "@/tanstack/restaurants";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 
-const RADIUS_OPTIONS_M = [1000, 1500, 3000, 5000]
 
 export function ListPage() {
 
     const { profile } = useAuth();
 
-    const { home } = useHomeLocation()
-    const [radius, setRadius] = useState(1000)
-    const { data: restaurants = [], isLoading, error } = useNearbyRestaurants(home, radius)
+    const { home, loading } = useHomeLocation()
+    const { data: restaurants = [], isLoading, error } = useNearbyRestaurants(home, 2000)
+
+    if (loading)
+        return <Spinner />
 
     if (!home) {
         return <Navigate to="/profile" />
@@ -29,19 +30,6 @@ export function ListPage() {
                 user={profile!}
             />
             <main className='flex-1 size-full pb-safe-bottom'>
-
-                <div className="flex gap-2">
-                    {RADIUS_OPTIONS_M.map((r) => (
-                        <Button
-                            key={r}
-                            size="sm"
-                            variant={r === radius ? "default" : "outline"}
-                            onClick={() => setRadius(r)}
-                        >
-                            {r / 1000} km
-                        </Button>
-                    ))}
-                </div>
 
                 {isLoading && <p className="text-sm text-muted-foreground">Lädt Restaurants von OpenStreetMap…</p>}
                 {error && <p className="text-sm text-destructive">{error.message}</p>}
