@@ -79,6 +79,7 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           VITE_GEOAPIFY_API_KEY: ${{ secrets.GEOAPIFY_API_KEY }}
           VITE_GIT_COMMIT: ${{ needs.prepare.outputs.short_sha }}
+          VITE_GITHUB_PAGES: true
           VITE_ENV: "production"
 
       - name: Upload Pages artifact

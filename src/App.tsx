@@ -75,9 +75,7 @@ const router = createHashRouter([
     path: '*',
     element: <NotFoundPage />,
   },
-], {
-  basename: "/food_hunter"
-})
+])
 
 export function App() {
   return <RouterProvider router={router} />
