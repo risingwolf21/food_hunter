@@ -1,4 +1,3 @@
-import opening_hours from "opening_hours"
 
 export interface GeoapifyResponse {
   type: "FeatureCollection"
