@@ -1,7 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useRestaurant } from "@/tanstack/restaurants";
+import { useAuth } from "@/contexts/auth-context";
+import { useMarkVisited, useRestaurant } from "@/tanstack/restaurants";
 import {
     Accessibility,
     ArrowLeft,
@@ -16,12 +17,16 @@ import {
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 export function RestaurantPage() {
 
+    const { user } = useAuth();
+
     const { restaurantId } = useParams();
     const navigate = useNavigate();
 
-    if (!restaurantId) return <Navigate to={"/"} />;
+    if (!restaurantId || !user) return <Navigate to={"/"} />;
 
-    const { data: restaurant, isLoading, error } = useRestaurant(restaurantId)
+    const markVisited = useMarkVisited(user.id)
+
+    const { data: restaurant, isLoading, error } = useRestaurant(restaurantId, user?.id)
 
     return (
         <div className="dvh-full">
@@ -52,8 +57,10 @@ export function RestaurantPage() {
                                 </p>
                             </div>
 
-                            <Button variant={"outline"}>
-                                <Star />
+                            <Button variant={"outline"} onClick={() => markVisited.mutate(restaurant)}>
+                                {
+                                    restaurant.visited ? <Star color="gold" fill="gold" /> : <Star />
+                                }
                             </Button>
                         </div>
 
@@ -146,9 +153,14 @@ export function RestaurantPage() {
                                             <p>
                                                 Öffnungszeiten
                                             </p>
-                                            {
-                                                JSON.stringify(restaurant.opening_hours.values)
-                                            }
+                                            <div className="grid grid-cols-2 gap-2 mt-1">
+                                                {
+                                                    ...restaurant.opening_hours.map(x => [
+                                                        <div key={x.days} className="font-bold">{x.days}</div>,
+                                                        <div key={x.days + "times"}>{x.times}</div>
+                                                    ])
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </CardContent>
@@ -179,6 +191,6 @@ export function RestaurantPage() {
                     </>
                 )}
             </div>
-        </div>
+        </div >
     )
 }

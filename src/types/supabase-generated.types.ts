@@ -39,33 +39,87 @@ export type Database = {
       restaurants: {
         Row: {
           address: string | null
+          categories: string[] | null
           created_at: string
           cuisine: string | null
+          delivery: boolean | null
+          diet_halal: boolean | null
+          diet_kosher: boolean | null
+          diet_vegan: boolean | null
+          diet_vegetarian: boolean | null
+          email: string | null
           id: string
+          internet_access: boolean | null
+          last_synced_at: string
           lat: number
           lng: number
           name: string
-          osm_id: number
+          opening_hours: string | null
+          outdoor_seating: boolean | null
+          payment_options: Json | null
+          phone: string | null
+          place_id: string
+          takeaway: boolean | null
+          website: string | null
+          wheelchair_accessible: boolean | null
+          wheelchair_description: string | null
+          wheelchair_limited: boolean | null
         }
         Insert: {
           address?: string | null
+          categories?: string[] | null
           created_at?: string
           cuisine?: string | null
+          delivery?: boolean | null
+          diet_halal?: boolean | null
+          diet_kosher?: boolean | null
+          diet_vegan?: boolean | null
+          diet_vegetarian?: boolean | null
+          email?: string | null
           id?: string
+          internet_access?: boolean | null
+          last_synced_at?: string
           lat: number
           lng: number
           name: string
-          osm_id: number
+          opening_hours?: string | null
+          outdoor_seating?: boolean | null
+          payment_options?: Json | null
+          phone?: string | null
+          place_id: string
+          takeaway?: boolean | null
+          website?: string | null
+          wheelchair_accessible?: boolean | null
+          wheelchair_description?: string | null
+          wheelchair_limited?: boolean | null
         }
         Update: {
           address?: string | null
+          categories?: string[] | null
           created_at?: string
           cuisine?: string | null
+          delivery?: boolean | null
+          diet_halal?: boolean | null
+          diet_kosher?: boolean | null
+          diet_vegan?: boolean | null
+          diet_vegetarian?: boolean | null
+          email?: string | null
           id?: string
+          internet_access?: boolean | null
+          last_synced_at?: string
           lat?: number
           lng?: number
           name?: string
-          osm_id?: number
+          opening_hours?: string | null
+          outdoor_seating?: boolean | null
+          payment_options?: Json | null
+          phone?: string | null
+          place_id?: string
+          takeaway?: boolean | null
+          website?: string | null
+          wheelchair_accessible?: boolean | null
+          wheelchair_description?: string | null
+          wheelchair_limited?: boolean | null
         }
         Relationships: []
       }

@@ -1,6 +1,7 @@
-import { fetchNearbyRestaurants, fetchRestaurant } from "@/features/restaurants/geoapify"
+import { fetchNearbyRestaurants, fetchRestaurant, upsertRestaurantAndCreateVisit, type PlaceDetail } from "@/features/restaurants/geoapify"
 import type { HomeLocation } from "@/features/restaurants/useHomeLocation";
-import { useQuery } from "@tanstack/react-query"
+import queryClient from "@/lib/queryclient";
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export const RESTAURANTS_QUERY_KEYS = {
     all: ['restaurants'] as const,
@@ -8,23 +9,32 @@ export const RESTAURANTS_QUERY_KEYS = {
     restaurant: (placeId: string) => [...RESTAURANTS_QUERY_KEYS.all, 'restaurant', placeId] as const,
 }
 
-export const useNearbyRestaurants = (home: HomeLocation | null, radius: number) => useQuery({
+export const useNearbyRestaurants = (home: HomeLocation | null, radius: number, userId: string | null) => useQuery({
     queryKey: RESTAURANTS_QUERY_KEYS.nearby(home?.lat ?? 0, home?.lng ?? 0, radius),
-    enabled: !!home,
+    enabled: !!home && !!userId,
     staleTime: 1000 * 60 * 5, // 5 Minuten
     queryFn: async () => {
-        const result = await fetchNearbyRestaurants(home?.lat ?? 0, home?.lng ?? 0, radius)
+        const result = await fetchNearbyRestaurants(home?.lat ?? 0, home?.lng ?? 0, radius, userId!)
 
         return result ?? []
     }
 });
 
-export const useRestaurant = (placeId: string) => useQuery({
+export const useRestaurant = (placeId: string, userId?: string | null) => useQuery({
     queryKey: RESTAURANTS_QUERY_KEYS.restaurant(placeId),
     staleTime: 1000 * 60 * 60, // 5 Minuten
+    enabled: !!userId,
     queryFn: async () => {
-        const result = await fetchRestaurant(placeId)
+        const result = await fetchRestaurant(placeId, userId!)
 
         return result
     }
 });
+
+export const useMarkVisited = (userId: string) => useMutation({
+    mutationFn: (place: PlaceDetail) => upsertRestaurantAndCreateVisit(userId, place),
+    onSuccess: ({ place }) => {
+        queryClient.invalidateQueries({ queryKey: ["visits"] })
+        queryClient.invalidateQueries({ queryKey: RESTAURANTS_QUERY_KEYS.restaurant(place.placeId) })
+    },
+})

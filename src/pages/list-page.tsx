@@ -9,10 +9,10 @@ import { Navigate } from "react-router-dom";
 
 export function ListPage() {
 
-    const { profile } = useAuth();
+    const { profile, user } = useAuth();
 
     const { home, loading } = useHomeLocation()
-    const { data: restaurants = [], isLoading, error } = useNearbyRestaurants(home, 2000)
+    const { data: restaurants = [], isLoading, error } = useNearbyRestaurants(home, 2000, user?.id ?? null)
 
     if (loading)
         return <Spinner />

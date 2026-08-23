@@ -9,10 +9,10 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export function MapPage() {
 
-    const { profile } = useAuth();
+    const { profile, user } = useAuth();
     const navigate = useNavigate();
     const { home, loading } = useHomeLocation()
-    const { data: restaurants = [] } = useNearbyRestaurants(home, 2000)
+    const { data: restaurants = [] } = useNearbyRestaurants(home, 2000, user?.id ?? null)
 
     if (loading)
         return <Spinner />
@@ -46,7 +46,7 @@ export function MapPage() {
                                     <MapMarker
                                         key={r.placeId}
                                         position={[r.lat, r.lng]}
-                                        icon={<ChefHat />}
+                                        icon={r.visited ? <ChefHat fill="gold" /> : <ChefHat />}
                                         eventHandlers={{
                                             click: () => {
                                                 navigate(`/restaurant/${r.placeId}`)
