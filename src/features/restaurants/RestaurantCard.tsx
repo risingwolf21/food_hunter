@@ -14,7 +14,7 @@ export function RestaurantCard({ restaurant }: Props) {
 
   return (
     <Card onClick={() => navigate(`/restaurant/${restaurant.placeId}`)} className="cursor-pointer">
-      <CardContent className="flex items-center justify-between gap-3 py-3">
+      <CardContent className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <p className="truncate font-medium">{restaurant.name}</p>

@@ -38,7 +38,7 @@ export function ListPage() {
                     </p>
                 )}
 
-                <div className="space-y-2">
+                <div className="space-y-2 p-2">
                     {restaurants.map((r) => (
                         <RestaurantCard
                             key={r.placeId}
