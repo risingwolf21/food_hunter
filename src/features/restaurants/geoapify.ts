@@ -206,38 +206,6 @@ export function parseGeoapifyPlaceDetails(json: unknown): PlaceDetail | null {
 
   if (!p?.name) return null
 
-  const oh = new opening_hours(p.opening_hours ?? "")
-
-  const startOfWeek = new Date();
-  const currentDay = startOfWeek.getDay(); // 0 is Sunday, 1 is Monday
-  const distanceToMonday = currentDay === 0 ? -6 : 1 - currentDay;
-  startOfWeek.setDate(startOfWeek.getDate() + distanceToMonday);
-  startOfWeek.setHours(0, 0, 0, 0);
-
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-  const ohResult = new Map<string, string>()
-
-  // Iterate through all 7 days of the week
-  days.forEach((dayName, index) => {
-    const dateFrom = new Date(startOfWeek);
-    dateFrom.setDate(startOfWeek.getDate() + index);
-
-    const dateTo = new Date(dateFrom);
-    dateTo.setDate(dateFrom.getDate() + 1); // Up to the start of the next day
-
-    // Get all periods when the restaurant is open on this specific day
-    const intervals = oh.getOpenIntervals(dateFrom, dateTo);
-
-    const timeStrings = intervals.map(interval => {
-      const start = interval[0].toLocaleTimeString(["de"], { hour: '2-digit', minute: '2-digit', hour12: false });
-      const end = interval[1].toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-      return `${start} - ${end}`;
-    });
-
-    const displayHours = timeStrings.length > 0 ? timeStrings.join(', ') : 'Closed';
-    ohResult.set(dayName, displayHours)
-  });
 
   const wheelchair =
     p?.facilities?.wheelchair === undefined
@@ -273,7 +241,7 @@ export function parseGeoapifyPlaceDetails(json: unknown): PlaceDetail | null {
     operator: p.operator ?? null,
     website: p.website ?? null,
     phone: p.contact?.phone ?? null,
-    opening_hours: ohResult,
+    opening_hours: new Map<string, string>(),
     wheelchair,
     amenities,
     diet,
