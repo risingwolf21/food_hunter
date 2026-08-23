@@ -1,13 +1,13 @@
-import { createBrowserRouter, RouterProvider, Navigate, createHashRouter } from 'react-router-dom'
+import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { AppShell } from './components/app-shell'
 import { useAuth } from './contexts/auth-context'
 import { LoginPage } from './pages/auth/login-page'
 import { RegisterPage } from './pages/auth/register-page'
+import { ListPage } from './pages/list-page'
 import { MapPage } from './pages/map-page'
 import { NotFoundPage } from './pages/not-found-page'
-import { AppShell } from './components/app-shell'
-import { ListPage } from './pages/list-page'
-import { RestaurantPage } from './pages/restaurant-page'
 import { ProfilePage } from './pages/profile-page'
+import { RestaurantPage } from './pages/restaurant-page'
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth()

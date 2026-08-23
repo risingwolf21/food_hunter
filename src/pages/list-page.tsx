@@ -4,7 +4,6 @@ import { useAuth } from "@/contexts/auth-context";
 import { RestaurantCard } from "@/features/restaurants/RestaurantCard";
 import { useHomeLocation } from "@/features/restaurants/useHomeLocation";
 import { useNearbyRestaurants } from "@/tanstack/restaurants";
-import { useState } from "react";
 import { Navigate } from "react-router-dom";
 
 
