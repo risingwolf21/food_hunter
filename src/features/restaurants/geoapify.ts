@@ -182,7 +182,7 @@ export async function fetchNearbyRestaurants(
 
   // ?categories=catering&filter=circle:11.5754895,48.1374742,5000&bias=proximity:11.5754895,48.1374742&lang=de&limit=20&apiKey=YOUR_API_KEY
 
-  const url = `${GEOPAIFY_PLACES_URL}?categories=catering&filter=circle:${lng},${lat},${radiusMeters}&bias=proximity:${lng},${lat}&apiKey=${API_KEY}`
+  const url = `${GEOPAIFY_PLACES_URL}?categories=catering&filter=circle:${lng},${lat},${radiusMeters}&bias=proximity:${lng},${lat}&limit=100&apiKey=${API_KEY}`
 
   const response = await fetch(url, {
     method: "GET",
