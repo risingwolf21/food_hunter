@@ -5,7 +5,7 @@ import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { cva, VariantProps } from "class-variance-authority"
+import { cva, type VariantProps } from "class-variance-authority"
 
 function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
   return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />

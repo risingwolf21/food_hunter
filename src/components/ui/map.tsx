@@ -6,6 +6,7 @@ import {
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuLabel,
+    DropdownMenuPortal,
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
     DropdownMenuSeparator,
@@ -39,7 +40,7 @@ import type {
 } from "leaflet"
 import "leaflet-draw/dist/leaflet.draw.css"
 import "leaflet.fullscreen/dist/Control.FullScreen.css"
-import type {} from "leaflet.markercluster"
+import type { } from "leaflet.markercluster"
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 import "leaflet/dist/leaflet.css"
@@ -269,7 +270,7 @@ function MapTileLayer({
         resolvedTheme === "dark" && darkAttribution
             ? darkAttribution
             : (attribution ??
-              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
+                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
 
     useEffect(() => {
         if (context) {
@@ -392,7 +393,7 @@ function MapLayers({
         if (tileLayers.length > 0 && !selectedTileLayer) {
             const validDefaultValue =
                 defaultTileLayer &&
-                tileLayers.some((layer) => layer.name === defaultTileLayer)
+                    tileLayers.some((layer) => layer.name === defaultTileLayer)
                     ? defaultTileLayer
                     : tileLayers[0].name
             setSelectedTileLayer(validDefaultValue)
@@ -483,57 +484,59 @@ function MapLayersControl({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger render={<Button type="button" variant="secondary" size="icon-sm" aria-label="Select layers" title="Select layers" className={cn(
-                                    "absolute z-1000 border",
-                                    position,
-                                    className
-                                )} {...props} />}><LayersIcon /></DropdownMenuTrigger>
-            <DropdownMenuContent
-                align="end"
-                className="z-1000"
+                "absolute z-1000 border",
+                position,
+                className
+            )} {...props} />}><LayersIcon /></DropdownMenuTrigger>
+            <DropdownMenuPortal
                 container={map.getContainer()}>
-                {showTileLayersDropdown && (
-                    <>
-                        <DropdownMenuLabel>{tileLayersLabel}</DropdownMenuLabel>
-                        <DropdownMenuRadioGroup
-                            value={selectedTileLayer}
-                            onValueChange={setSelectedTileLayer}>
-                            {tileLayers.map((tileLayer) => (
-                                <DropdownMenuRadioItem
-                                    key={tileLayer.name}
-                                    value={tileLayer.name}>
-                                    {tileLayer.name}
-                                </DropdownMenuRadioItem>
+                <DropdownMenuContent
+                    align="end"
+                    className="z-1000">
+                    {showTileLayersDropdown && (
+                        <>
+                            <DropdownMenuLabel>{tileLayersLabel}</DropdownMenuLabel>
+                            <DropdownMenuRadioGroup
+                                value={selectedTileLayer}
+                                onValueChange={setSelectedTileLayer}>
+                                {tileLayers.map((tileLayer) => (
+                                    <DropdownMenuRadioItem
+                                        key={tileLayer.name}
+                                        value={tileLayer.name}>
+                                        {tileLayer.name}
+                                    </DropdownMenuRadioItem>
+                                ))}
+                            </DropdownMenuRadioGroup>
+                        </>
+                    )}
+                    {showTileLayersDropdown && showLayerGroupsDropdown && (
+                        <DropdownMenuSeparator />
+                    )}
+                    {showLayerGroupsDropdown && (
+                        <>
+                            <DropdownMenuLabel>
+                                {layerGroupsLabel}
+                            </DropdownMenuLabel>
+                            {layerGroups.map((layerGroup) => (
+                                <DropdownMenuCheckboxItem
+                                    key={layerGroup.name}
+                                    checked={activeLayerGroups.includes(
+                                        layerGroup.name
+                                    )}
+                                    disabled={layerGroup.disabled}
+                                    onCheckedChange={(checked) =>
+                                        handleLayerGroupToggle(
+                                            layerGroup.name,
+                                            checked
+                                        )
+                                    }>
+                                    {layerGroup.name}
+                                </DropdownMenuCheckboxItem>
                             ))}
-                        </DropdownMenuRadioGroup>
-                    </>
-                )}
-                {showTileLayersDropdown && showLayerGroupsDropdown && (
-                    <DropdownMenuSeparator />
-                )}
-                {showLayerGroupsDropdown && (
-                    <>
-                        <DropdownMenuLabel>
-                            {layerGroupsLabel}
-                        </DropdownMenuLabel>
-                        {layerGroups.map((layerGroup) => (
-                            <DropdownMenuCheckboxItem
-                                key={layerGroup.name}
-                                checked={activeLayerGroups.includes(
-                                    layerGroup.name
-                                )}
-                                disabled={layerGroup.disabled}
-                                onCheckedChange={(checked) =>
-                                    handleLayerGroupToggle(
-                                        layerGroup.name,
-                                        checked
-                                    )
-                                }>
-                                {layerGroup.name}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </>
-                )}
-            </DropdownMenuContent>
+                        </>
+                    )}
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
         </DropdownMenu>
     )
 }
@@ -589,12 +592,12 @@ function MapMarkerClusterGroup({
 
     const iconCreateFunction = icon
         ? (cluster: MarkerCluster) => {
-              const markerCount = cluster.getChildCount()
-              const iconNode = icon(markerCount)
-              return L.divIcon({
-                  html: renderToString(iconNode),
-              })
-          }
+            const markerCount = cluster.getChildCount()
+            const iconNode = icon(markerCount)
+            return L.divIcon({
+                html: renderToString(iconNode),
+            })
+        }
         : undefined
 
     return (
@@ -905,15 +908,15 @@ function MapLocateControl({
                     isLocating
                         ? "Locating..."
                         : location
-                          ? "Stop tracking"
-                          : "Track location"
+                            ? "Stop tracking"
+                            : "Track location"
                 }
                 aria-label={
                     isLocating
                         ? "Locating..."
                         : location
-                          ? "Stop location tracking"
-                          : "Start location tracking"
+                            ? "Stop location tracking"
+                            : "Start location tracking"
                 }
                 className="border"
                 {...props}>
@@ -1118,9 +1121,9 @@ function MapDrawPolyline({
                 new L.Draw.Polyline(map, {
                     ...(mapDrawHandleIcon
                         ? {
-                              icon: mapDrawHandleIcon,
-                              touchIcon: mapDrawHandleIcon,
-                          }
+                            icon: mapDrawHandleIcon,
+                            touchIcon: mapDrawHandleIcon,
+                        }
                         : {}),
                     showLength,
                     drawError,
@@ -1201,9 +1204,9 @@ function MapDrawPolygon({
                 new L.Draw.Polygon(map, {
                     ...(mapDrawHandleIcon
                         ? {
-                              icon: mapDrawHandleIcon,
-                              touchIcon: mapDrawHandleIcon,
-                          }
+                            icon: mapDrawHandleIcon,
+                            touchIcon: mapDrawHandleIcon,
+                        }
                         : {}),
                     drawError,
                     shapeOptions,
