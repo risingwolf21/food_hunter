@@ -57,7 +57,7 @@ $$;
 
 grant execute on function search_profiles(text) to authenticated;
 
-drop policy if exists "Nutzer sieht eigenes Profil";
+drop policy if exists "Nutzer sieht eigenes Profil" on profiles;
 
 create policy "Nutzer sieht alle Profile"
   on profiles for select
