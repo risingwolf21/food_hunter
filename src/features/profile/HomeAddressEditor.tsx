@@ -1,10 +1,11 @@
 import { useState } from "react"
-import { Search, MapPin, Check } from "lucide-react"
+import { Search, MapPin, Check, TriangleAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
-import { useHomeLocation } from "./useHomeLocation"
-import { geocodeAddress, type GeocodeResult } from "./geocode"
+import { useHomeLocation } from "../restaurants/useHomeLocation"
+import { geocodeAddress, type GeocodeResult } from "../restaurants/geocode"
+import { Alert, AlertTitle } from "@/components/ui/alert"
 
 export function HomeAddressEditor() {
     const { home, saveHome } = useHomeLocation()
@@ -50,6 +51,13 @@ export function HomeAddressEditor() {
                     <MapPin className="mt-0.5 size-4 shrink-0" />
                     {home.label ?? `${home.lat.toFixed(5)}, ${home.lng.toFixed(5)}`}
                 </p>
+            )}
+
+            {!home && (
+                <Alert variant={"error"}>
+                    <TriangleAlert />
+                    <AlertTitle>Du musst deine Adresse setzen um Restaurants und Cafés in deiner Nähe entdecken zu können.</AlertTitle>
+                </Alert>
             )}
 
             <form onSubmit={handleSearch} className="flex gap-2">

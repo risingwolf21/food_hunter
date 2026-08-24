@@ -1,5 +1,5 @@
 import { Utensils, MapPinned, ChefHat, CalendarClock } from "lucide-react"
-import { useVisitStats } from "./useVisitStats"
+import { useVisitStats } from "../restaurants/useVisitStats"
 
 export function VisitStatsCard() {
   const { stats, loading } = useVisitStats()

@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      friendships: {
+        Row: {
+          addressee_id: string
+          created_at: string
+          id: string
+          requester_id: string
+          status: string
+        }
+        Insert: {
+          addressee_id: string
+          created_at?: string
+          id?: string
+          requester_id: string
+          status?: string
+        }
+        Update: {
+          addressee_id?: string
+          created_at?: string
+          id?: string
+          requester_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friendships_addressee_id_fkey"
+            columns: ["addressee_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "friendships_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -17,6 +56,7 @@ export type Database = {
           home_lat: number | null
           home_lng: number | null
           id: string
+          username: string | null
         }
         Insert: {
           created_at?: string
@@ -25,6 +65,7 @@ export type Database = {
           home_lat?: number | null
           home_lng?: number | null
           id: string
+          username?: string | null
         }
         Update: {
           created_at?: string
@@ -33,6 +74,7 @@ export type Database = {
           home_lat?: number | null
           home_lng?: number | null
           id?: string
+          username?: string | null
         }
         Relationships: []
       }
@@ -173,7 +215,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      search_profiles: {
+        Args: { search_term: string }
+        Returns: {
+          display_name: string
+          id: string
+          username: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

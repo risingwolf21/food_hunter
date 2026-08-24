@@ -8,6 +8,7 @@ import { MapPage } from './pages/map-page'
 import { NotFoundPage } from './pages/not-found-page'
 import { ProfilePage } from './pages/profile-page'
 import { RestaurantPage } from './pages/restaurant-page'
+import { FriendsPage } from './pages/friends-page'
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth()
@@ -59,6 +60,10 @@ const router = createHashRouter([
       {
         path: '/profile',
         element: <ProfilePage />,
+      },
+      {
+        path: '/friends',
+        element: <FriendsPage />,
       },
       {
         path: '*',

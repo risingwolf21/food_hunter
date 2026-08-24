@@ -1,20 +1,44 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Field } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Spinner } from "@/components/ui/spinner"
 import { useAuth } from "@/contexts/auth-context"
-import { HomeAddressEditor } from "@/features/restaurants/HomeAddressEditor"
-import { VisitStatsCard } from "@/features/restaurants/VisitStatsCard"
+import { HomeAddressEditor } from "@/features/profile/HomeAddressEditor"
+import { VisitStatsCard } from "@/features/profile/VisitStatsCard"
+import { useProfile, useUpdateProfileName } from "@/tanstack/profile"
+import { useState } from "react"
 
 export const ProfilePage = () => {
     const { session, signOut } = useAuth()
 
+    const { data: profile, isLoading } = useProfile();
+
+    const updateUserName = useUpdateProfileName(session?.user.id);
+
+    const [username, setUsername] = useState(profile?.display_name ?? "")
+
     return (
-        <div className="mx-auto max-w-md space-y-4 p-4">
+        <div className="mx-auto max-w-md w-full space-y-4 p-4">
             <Card>
                 <CardHeader>
                     <CardTitle>Profil</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     <p className="text-sm text-muted-foreground">{session?.user.email}</p>
+                    <Field orientation="horizontal">
+                        <Input
+                            type="search"
+                            placeholder="Suche eine Person..."
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <Button onClick={() => updateUserName.mutate(username)} disabled={username === profile?.display_name || isLoading}>
+                            {
+                                isLoading ? <Spinner /> : "Speichern"
+                            }
+                        </Button>
+                    </Field>
                     <Button variant="outline" onClick={signOut}>
                         Abmelden
                     </Button>

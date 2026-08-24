@@ -2,6 +2,7 @@ import * as React from 'react'
 import type { User, AuthError, Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 import type { Tables } from '@/types/supabase-generated.types'
+import queryClient from '@/lib/queryclient'
 
 interface AuthContextValue {
   user: User | null
@@ -65,6 +66,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function signOut(): Promise<void> {
+    queryClient.clear();
+    await queryClient.invalidateQueries();
     await supabase.auth.signOut()
   }
 

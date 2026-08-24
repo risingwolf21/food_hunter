@@ -99,7 +99,7 @@ export function AppBar({
             <Button
               variant="ghost"
               className="relative h-8 w-8 rounded-full ml-1"
-              onClick={() => navigate("/user")}
+              onClick={() => navigate("/profile")}
             >
               <Avatar className="h-8 w-8 border border-border/50 shadow-sm">
                 <AvatarFallback className="bg-primary text-primary-foreground font-medium">
