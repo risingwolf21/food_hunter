@@ -2,9 +2,10 @@ import queryClient from "@/lib/queryclient";
 import { supabase } from "@/lib/supabase";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useRatingSummary = (restaurantId: string) => useQuery({
+export const useRatingSummary = (restaurantId: string | null) => useQuery({
     queryKey: ["ratingSummary", restaurantId],
     queryFn: async () => {
+        if (!restaurantId) return null
         const { data, error } = await supabase
             .from("restaurant_rating_summary")
             .select("avg_rating, rating_count")
@@ -17,10 +18,10 @@ export const useRatingSummary = (restaurantId: string) => useQuery({
     staleTime: 5 * 60 * 1000,
 })
 
-export const useMyRating = (userId: string | undefined, restaurantId: string) => useQuery({
+export const useMyRating = (userId: string | undefined, restaurantId: string | null) => useQuery({
     queryKey: ["myRating", userId, restaurantId],
     queryFn: async () => {
-        if (!userId) return null
+        if (!userId || !restaurantId) return null
 
         const { data, error } = await supabase
             .from("ratings")
@@ -36,8 +37,10 @@ export const useMyRating = (userId: string | undefined, restaurantId: string) =>
     staleTime: 5 * 60 * 1000,
 })
 
-export const useUpsertRating = (userId: string, restaurantId: string) => useMutation({
+export const useUpsertRating = (userId: string, restaurantId: string | null) => useMutation({
     mutationFn: async (rating: number) => {
+        if (!restaurantId) return null
+
         const { error } = await supabase
             .from("ratings")
             .upsert({ user_id: userId, restaurant_id: restaurantId, rating }, { onConflict: "user_id,restaurant_id" })
@@ -49,8 +52,10 @@ export const useUpsertRating = (userId: string, restaurantId: string) => useMuta
     },
 })
 
-export const useDeleteRating = (userId: string, restaurantId: string) => useMutation({
+export const useDeleteRating = (userId: string, restaurantId: string | null) => useMutation({
     mutationFn: async () => {
+        if (!restaurantId) return null
+
         const { error } = await supabase
             .from("ratings")
             .delete()

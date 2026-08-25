@@ -17,6 +17,7 @@ interface FriendActivityRow {
     rating: number | null
     comment_body: string | null
     occurred_at: string
+    place_id: string
 }
 
 export const useFriendActivityFeed = (limit = 30) => useQuery({
@@ -34,6 +35,7 @@ export const useFriendActivityFeed = (limit = 30) => useQuery({
                 restaurantName: r.restaurant_name,
                 cuisine: r.cuisine,
                 occurredAt: r.occurred_at,
+                place_id: r.place_id
             }
             if (r.activity_type === "rated") return { ...base, type: "rated" as const, rating: r.rating! }
             if (r.activity_type === "commented") return { ...base, type: "commented" as const, commentBody: r.comment_body! }

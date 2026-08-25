@@ -2,9 +2,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
-import { useComments, useAddComment, useDeleteComment } from "@/features/restaurants/comments";
-import { useRatingSummary, useMyRating, useUpsertRating } from "@/features/restaurants/reviews";
-import { useMarkVisited, useRestaurant } from "@/tanstack/restaurants";
+import { useAddComment, useComments, useDeleteComment } from "@/features/restaurants/comments";
+import type { PlaceDetail } from "@/features/restaurants/geoapify";
+import { useMyRating, useRatingSummary, useUpsertRating } from "@/features/restaurants/reviews";
+import { useMarkVisited } from "@/tanstack/restaurants";
 import {
     Accessibility,
     ArrowLeft,
@@ -19,27 +20,24 @@ import {
     Trash2
 } from "lucide-react";
 import { useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-export function RestaurantPage() {
+import { useNavigate } from "react-router-dom";
+
+
+export const RestaurantPage = ({ restaurant, isLoading, error }: { restaurant: PlaceDetail, isLoading: boolean, error: Error | null }) => {
 
     const { user } = useAuth();
 
-    const { restaurantId } = useParams();
     const navigate = useNavigate();
-
-    if (!restaurantId || !user) return <Navigate to={"/"} />;
 
     const markVisited = useMarkVisited(user.id)
 
-    const { data: restaurant, isLoading, error } = useRestaurant(restaurantId, user?.id)
+    const { data: ratingSummary } = useRatingSummary(restaurant.restaurantId)
+    const { data: myRating } = useMyRating(user.id, restaurant.restaurantId)
+    const upsertRating = useUpsertRating(user.id, restaurant.restaurantId)
 
-    const { data: ratingSummary } = useRatingSummary(restaurantId)
-    const { data: myRating } = useMyRating(user.id, restaurantId)
-    const upsertRating = useUpsertRating(user.id, restaurantId)
-
-    const { data: comments } = useComments(restaurantId)
-    const addComment = useAddComment(restaurantId)
-    const deleteComment = useDeleteComment(restaurantId)
+    const { data: comments } = useComments(restaurant.restaurantId)
+    const addComment = useAddComment(restaurant.restaurantId)
+    const deleteComment = useDeleteComment(restaurant.restaurantId)
     const [commentText, setCommentText] = useState("")
 
     function handleAddComment() {

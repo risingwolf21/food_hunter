@@ -1,14 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { z } from 'zod'
 
-import { useAuth } from '@/contexts/auth-context'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useApplication } from '@/contexts/application-context'
 
 const loginSchema = z.object({
   email: z.string().email('Enter a valid email address'),
@@ -18,7 +18,7 @@ const loginSchema = z.object({
 type LoginValues = z.infer<typeof loginSchema>
 
 export function LoginForm() {
-  const { signIn } = useAuth()
+  const { signIn } = useApplication()
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
 

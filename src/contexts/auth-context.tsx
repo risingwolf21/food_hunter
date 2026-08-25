@@ -1,17 +1,14 @@
-import * as React from 'react'
-import type { User, AuthError, Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 import type { Tables } from '@/types/supabase-generated.types'
-import queryClient from '@/lib/queryclient'
+import type { Session, User } from '@supabase/supabase-js'
+import * as React from 'react'
+import { Navigate } from 'react-router-dom'
 
 interface AuthContextValue {
-  user: User | null
-  session: Session | null
-  profile: Tables<'profiles'> | null
+  user: User
+  session: Session
+  profile: Tables<'profiles'>
   isLoading: boolean
-  signIn: (email: string, password: string) => Promise<AuthError | null>
-  signUp: (email: string, password: string, fullName: string) => Promise<AuthError | null>
-  signOut: () => Promise<void>
 }
 
 const AuthContext = React.createContext<AuthContextValue | null>(null)
@@ -51,28 +48,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  async function signIn(email: string, password: string): Promise<AuthError | null> {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return error
+  if (isLoading) {
+    return (
+      <div className="flex min-h-svh items-center justify-center">
+        <div className="size-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    )
   }
 
-  async function signUp(email: string, password: string, fullName: string): Promise<AuthError | null> {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: fullName } },
-    })
-    return error
-  }
-
-  async function signOut(): Promise<void> {
-    queryClient.clear();
-    await queryClient.invalidateQueries();
-    await supabase.auth.signOut()
-  }
+  if (!user || !profile || !session)
+    return <Navigate to="/login" />
 
   return (
-    <AuthContext.Provider value={{ user, profile, session, isLoading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, profile, session, isLoading }}>
       {children}
     </AuthContext.Provider>
   )

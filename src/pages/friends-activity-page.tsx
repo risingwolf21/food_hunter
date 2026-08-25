@@ -3,27 +3,32 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useNavigate } from "react-router-dom"
 import { CheckCircle2, MapPin, MessageSquare, Star } from "lucide-react"
 import { useFriendActivityFeed } from "@/features/activities/friendActivities"
+import { AppBar } from "@/components/ui/appbar"
+import { useAuth } from "@/contexts/auth-context"
 
-export function FriendFeedPage() {
+export const FriendsActivityPage = () => {
+    const { profile } = useAuth();
     const { data: activities, isLoading, error } = useFriendActivityFeed()
     const navigate = useNavigate()
 
-    return (
-        <div className="mx-auto max-w-md space-y-3 p-4">
-            <h1 className="text-lg font-semibold">Freunde-Feed</h1>
-
-            {isLoading && <p className="text-sm text-muted-foreground">Lädt…</p>}
-            {error && <p className="text-sm text-destructive">{error.message}</p>}
-            {activities?.length === 0 && (
-                <p className="text-sm text-muted-foreground">Noch keine Aktivität von Freunden.</p>
-            )}
-
-            <div className="space-y-2">
+    return <div className="flex flex-col h-screen">
+        <AppBar
+            className='!border-b !shadow-sm'
+            title="Informationen"
+            user={profile!}
+        />
+        <main className='flex-1 size-full pb-safe-bottom'>
+            <div className="space-y-2 p-4">
+                {isLoading && <p className="text-sm text-muted-foreground">Lädt…</p>}
+                {error && <p className="text-sm text-destructive">{error.message}</p>}
+                {activities?.length === 0 && (
+                    <p className="text-sm text-muted-foreground">Noch keine Aktivität von Freunden.</p>
+                )}
                 {activities?.map((activity) => (
                     <Card
                         key={`${activity.type}-${activity.id}`}
                         className="cursor-pointer py-0"
-                        onClick={() => navigate(`/restaurant/${activity.restaurantId}`)}
+                        onClick={() => navigate(`/restaurant/${activity.place_id}`)}
                     >
                         <CardContent className="space-y-1.5 px-4 py-3 text-sm">
                             <p className="flex items-center gap-1.5">
@@ -59,6 +64,6 @@ export function FriendFeedPage() {
                     </Card>
                 ))}
             </div>
-        </div>
-    )
+        </main>
+    </div>
 }

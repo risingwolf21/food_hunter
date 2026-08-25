@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict n211xsAwHDXNHpGGtWgkj6NM362NVeVrHypEhaH4NWGhx47odXQYIRy36CWivJq
+-- \restrict KKpZhUv5jFVTrbGU2FonajHfPgBvb7qWjlQ9QkZlu78deiy9I9aNWxXbwFRA29Y
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -66,7 +66,16 @@ INSERT INTO "auth"."audit_log_entries" ("instance_id", "id", "payload", "created
 	('00000000-0000-0000-0000-000000000000', '4dadab85-bd24-4ad7-b774-030dacd5ddd1', '{"action":"user_signedup","actor_id":"190dff60-9072-4abc-a00b-f5f31890da41","actor_name":"Jane Smith","actor_username":"jane@smith.de","actor_via_sso":false,"log_type":"team","traits":{"provider":"email"}}', '2026-08-23 18:36:58.392755+00', ''),
 	('00000000-0000-0000-0000-000000000000', 'c85c27c2-1c3e-4197-b548-fa1b9bf837d7', '{"action":"login","actor_id":"190dff60-9072-4abc-a00b-f5f31890da41","actor_name":"Jane Smith","actor_username":"jane@smith.de","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-23 18:36:58.402566+00', ''),
 	('00000000-0000-0000-0000-000000000000', '5c657657-59b6-4f52-b4b1-e1e692af3d2e', '{"action":"logout","actor_id":"190dff60-9072-4abc-a00b-f5f31890da41","actor_name":"Jane Smith","actor_username":"jane@smith.de","actor_via_sso":false,"log_type":"account"}', '2026-08-23 18:37:00.461892+00', ''),
-	('00000000-0000-0000-0000-000000000000', '75fd2705-852b-4b1c-99da-fabbba0d2d22', '{"action":"login","actor_id":"54934b98-585d-42ab-ae72-aa61d56b2f83","actor_name":"Karl Wolf","actor_username":"karl.wolf2706@gmail.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-23 18:37:06.239439+00', '');
+	('00000000-0000-0000-0000-000000000000', '75fd2705-852b-4b1c-99da-fabbba0d2d22', '{"action":"login","actor_id":"54934b98-585d-42ab-ae72-aa61d56b2f83","actor_name":"Karl Wolf","actor_username":"karl.wolf2706@gmail.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-23 18:37:06.239439+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'fb83f8bb-29b2-43ff-a859-9d3c55d202a0', '{"action":"login","actor_id":"54934b98-585d-42ab-ae72-aa61d56b2f83","actor_name":"Karl Wolf","actor_username":"karl.wolf2706@gmail.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-25 14:57:48.702185+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'f38b7128-4edf-4026-bbaf-6ba7166bdbef', '{"action":"logout","actor_id":"54934b98-585d-42ab-ae72-aa61d56b2f83","actor_name":"Karl Wolf","actor_username":"karl.wolf2706@gmail.com","actor_via_sso":false,"log_type":"account"}', '2026-08-25 14:59:23.24936+00', ''),
+	('00000000-0000-0000-0000-000000000000', '6f394533-28a6-4cec-beb1-2d8ee0cee0a7', '{"action":"login","actor_id":"67325ad0-6c07-4da2-b7e7-798cf2cfa2a1","actor_name":"Max Mustermann","actor_username":"max@mustermann.de","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-25 14:59:29.256586+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'edaefc5b-dd32-4647-997d-c01831794739', '{"action":"logout","actor_id":"67325ad0-6c07-4da2-b7e7-798cf2cfa2a1","actor_name":"Max Mustermann","actor_username":"max@mustermann.de","actor_via_sso":false,"log_type":"account"}', '2026-08-25 14:59:59.403598+00', ''),
+	('00000000-0000-0000-0000-000000000000', '93bef954-af8c-47f7-88e8-1b57f0ab858a', '{"action":"login","actor_id":"54934b98-585d-42ab-ae72-aa61d56b2f83","actor_name":"Karl Wolf","actor_username":"karl.wolf2706@gmail.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-25 15:00:03.159772+00', ''),
+	('00000000-0000-0000-0000-000000000000', '178ef0ba-64f5-4138-b142-6e3c79f291e2', '{"action":"logout","actor_id":"54934b98-585d-42ab-ae72-aa61d56b2f83","actor_name":"Karl Wolf","actor_username":"karl.wolf2706@gmail.com","actor_via_sso":false,"log_type":"account"}', '2026-08-25 15:38:54.218506+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'c1087a4f-4c81-46d8-ad57-c523db3f4b71', '{"action":"login","actor_id":"67325ad0-6c07-4da2-b7e7-798cf2cfa2a1","actor_name":"Max Mustermann","actor_username":"max@mustermann.de","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-25 15:39:28.669695+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'b2624f2b-d456-43f2-87ee-d4650d63b0ec', '{"action":"logout","actor_id":"67325ad0-6c07-4da2-b7e7-798cf2cfa2a1","actor_name":"Max Mustermann","actor_username":"max@mustermann.de","actor_via_sso":false,"log_type":"account"}', '2026-08-25 15:44:02.323767+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'fd005a6f-fc97-47a4-b6a0-2fc59ce1074b', '{"action":"login","actor_id":"54934b98-585d-42ab-ae72-aa61d56b2f83","actor_name":"Karl Wolf","actor_username":"karl.wolf2706@gmail.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2026-08-25 15:44:06.608326+00', '');
 
 
 --
@@ -86,9 +95,9 @@ INSERT INTO "auth"."audit_log_entries" ("instance_id", "id", "payload", "created
 --
 
 INSERT INTO "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") VALUES
-	('00000000-0000-0000-0000-000000000000', '67325ad0-6c07-4da2-b7e7-798cf2cfa2a1', 'authenticated', 'authenticated', 'max@mustermann.de', '$2a$10$/mcPTm9RQSQWFcrf2eTmauOCBTi2CmJJD2MXs27.p4zwqqyKQW6G2', '2026-08-23 18:36:41.134493+00', NULL, '', NULL, '', NULL, '', '', NULL, '2026-08-23 18:36:41.144312+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "67325ad0-6c07-4da2-b7e7-798cf2cfa2a1", "email": "max@mustermann.de", "full_name": "Max Mustermann", "email_verified": true, "phone_verified": false}', NULL, '2026-08-23 18:36:41.125288+00', '2026-08-23 18:36:41.147036+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
 	('00000000-0000-0000-0000-000000000000', '190dff60-9072-4abc-a00b-f5f31890da41', 'authenticated', 'authenticated', 'jane@smith.de', '$2a$10$DRH9GOJZPCoWUJuvXwz9auwSE7YFP4/XoBqcyUmbHdeKM.1RFtrJ6', '2026-08-23 18:36:58.393148+00', NULL, '', NULL, '', NULL, '', '', NULL, '2026-08-23 18:36:58.403408+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "190dff60-9072-4abc-a00b-f5f31890da41", "email": "jane@smith.de", "full_name": "Jane Smith", "email_verified": true, "phone_verified": false}', NULL, '2026-08-23 18:36:58.388332+00', '2026-08-23 18:36:58.40573+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', '54934b98-585d-42ab-ae72-aa61d56b2f83', 'authenticated', 'authenticated', 'karl.wolf2706@gmail.com', '$2a$10$kZFGHrqXXj4DwqKwSlGk7OCYzh/3VRTab1XHcnyACrCGa3dLFvR2m', '2026-08-21 15:44:05.693659+00', NULL, '', NULL, '', NULL, '', '', NULL, '2026-08-23 18:37:06.2403+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "54934b98-585d-42ab-ae72-aa61d56b2f83", "email": "karl.wolf2706@gmail.com", "full_name": "Karl Wolf", "email_verified": true, "phone_verified": false}', NULL, '2026-08-21 15:44:05.687996+00', '2026-08-23 18:37:06.242475+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
+	('00000000-0000-0000-0000-000000000000', '67325ad0-6c07-4da2-b7e7-798cf2cfa2a1', 'authenticated', 'authenticated', 'max@mustermann.de', '$2a$10$/mcPTm9RQSQWFcrf2eTmauOCBTi2CmJJD2MXs27.p4zwqqyKQW6G2', '2026-08-23 18:36:41.134493+00', NULL, '', NULL, '', NULL, '', '', NULL, '2026-08-25 15:39:28.670859+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "67325ad0-6c07-4da2-b7e7-798cf2cfa2a1", "email": "max@mustermann.de", "full_name": "Max Mustermann", "email_verified": true, "phone_verified": false}', NULL, '2026-08-23 18:36:41.125288+00', '2026-08-25 15:39:28.673571+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
+	('00000000-0000-0000-0000-000000000000', '54934b98-585d-42ab-ae72-aa61d56b2f83', 'authenticated', 'authenticated', 'karl.wolf2706@gmail.com', '$2a$10$kZFGHrqXXj4DwqKwSlGk7OCYzh/3VRTab1XHcnyACrCGa3dLFvR2m', '2026-08-21 15:44:05.693659+00', NULL, '', NULL, '', NULL, '', '', NULL, '2026-08-25 15:44:06.609204+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "54934b98-585d-42ab-ae72-aa61d56b2f83", "email": "karl.wolf2706@gmail.com", "full_name": "Karl Wolf", "email_verified": true, "phone_verified": false}', NULL, '2026-08-21 15:44:05.687996+00', '2026-08-25 15:44:06.611743+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
 
 
 --
@@ -118,7 +127,7 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 --
 
 INSERT INTO "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") VALUES
-	('101c98f4-cbb9-4558-a133-ccb0e2a926c2', '54934b98-585d-42ab-ae72-aa61d56b2f83', '2026-08-23 18:37:06.240361+00', '2026-08-23 18:37:06.240361+00', NULL, 'aal1', NULL, NULL, 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1', '192.168.65.1', NULL, NULL, NULL, NULL, NULL);
+	('28b34fb5-3114-436d-afff-605f8f78b12c', '54934b98-585d-42ab-ae72-aa61d56b2f83', '2026-08-25 15:44:06.609259+00', '2026-08-25 15:44:06.609259+00', NULL, 'aal1', NULL, NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36', '172.19.0.1', NULL, NULL, NULL, NULL, NULL);
 
 
 --
@@ -126,7 +135,7 @@ INSERT INTO "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "fac
 --
 
 INSERT INTO "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") VALUES
-	('101c98f4-cbb9-4558-a133-ccb0e2a926c2', '2026-08-23 18:37:06.24285+00', '2026-08-23 18:37:06.24285+00', 'password', 'bc4ff3c3-6dbf-4e23-9938-d4633a6a94c1');
+	('28b34fb5-3114-436d-afff-605f8f78b12c', '2026-08-25 15:44:06.612119+00', '2026-08-25 15:44:06.612119+00', 'password', 'b1e0a87c-a975-47cb-b161-411c1487e178');
 
 
 --
@@ -170,7 +179,7 @@ INSERT INTO "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "
 --
 
 INSERT INTO "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") VALUES
-	('00000000-0000-0000-0000-000000000000', 21, 'bpgtefn5hfnz', '54934b98-585d-42ab-ae72-aa61d56b2f83', false, '2026-08-23 18:37:06.241651+00', '2026-08-23 18:37:06.241651+00', NULL, '101c98f4-cbb9-4558-a133-ccb0e2a926c2');
+	('00000000-0000-0000-0000-000000000000', 26, 'jyjycb7p23ek', '54934b98-585d-42ab-ae72-aa61d56b2f83', false, '2026-08-25 15:44:06.610665+00', '2026-08-25 15:44:06.610665+00', NULL, '28b34fb5-3114-436d-afff-605f8f78b12c');
 
 
 --
@@ -216,25 +225,52 @@ INSERT INTO "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "r
 INSERT INTO "public"."profiles" ("id", "display_name", "home_lat", "home_lng", "home_label", "created_at", "username") VALUES
 	('54934b98-585d-42ab-ae72-aa61d56b2f83', 'Karl Wolf', 48.1645169, 11.5754043, 'Destouchesstraße 57, 80803 München, Deutschland', '2026-08-21 15:44:05.687804+00', 'karl_wolf'),
 	('190dff60-9072-4abc-a00b-f5f31890da41', 'Max Mustermann', NULL, NULL, NULL, '2026-08-23 18:36:58.388145+00', 'max_mustermann'),
-	('67325ad0-6c07-4da2-b7e7-798cf2cfa2a1', 'Jane Smith', NULL, NULL, NULL, '2026-08-23 18:36:41.124994+00', 'jane_smith');
-
-
---
--- Data for Name: friendships; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
+	('67325ad0-6c07-4da2-b7e7-798cf2cfa2a1', 'Jane Smith', 48.1371079, 11.5753822, 'BY, Deutschland', '2026-08-23 18:36:41.124994+00', 'jane_smith');
 
 
 --
 -- Data for Name: restaurants; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."restaurants" ("id", "name", "lat", "lng", "address", "cuisine", "created_at", "place_id", "phone", "website", "email", "opening_hours", "wheelchair_accessible", "wheelchair_limited", "wheelchair_description", "internet_access", "outdoor_seating", "takeaway", "delivery", "diet_vegan", "diet_vegetarian", "diet_halal", "diet_kosher", "payment_options", "categories", "last_synced_at") VALUES
+	('65b55338-b590-48a4-b9a1-28263a2ccd47', 'Dosage', 48.1382981, 11.5778267, 'Old Court 3, 80331 Munich, Germany', NULL, '2026-08-25 14:59:47.71298+00', '51de82b6e6d8272740592b188cc0b3114840f00103f901744ec0ae00000000920306446f73616765', '+49 89 709 500 86', 'https://off-events.com/quartiere/dosage-bar/', NULL, NULL, true, false, NULL, false, true, false, false, false, false, false, false, NULL, NULL, '2026-08-25 14:59:47.703+00'),
+	('b27e0146-9198-42f0-8970-53a7471df2da', 'Two in One', 48.1636105, 11.5776222, 'Pündterplatz 8, 80803 Munich, Germany', NULL, '2026-08-25 15:35:46.340257+00', '511ce3d418be27274059432c5930f1144840f00103f901d6fc38e90000000092030a54776f20696e204f6e65', '+49 89 3407 6430', 'https://www.twoinone-muenchen.de/', NULL, 'Mo,Su,PH off; We-Sa 10:00-18:30', NULL, NULL, NULL, false, false, false, false, true, true, false, false, NULL, NULL, '2026-08-25 15:35:48.607+00'),
+	('12e0a519-21ee-43e1-9e45-1ee750113ee3', 'Ratskeller Weinstube', 48.1381636, 11.5756549, 'Landschaftstraße, 80331 Munich, Germany', NULL, '2026-08-25 15:43:33.086567+00', '517590323dbc26274059378b4758af114840f00103f90107adb01a00000000920314526174736b656c6c6572205765696e7374756265', NULL, NULL, NULL, 'Mo-Sa 10:00-01:00; Su 10:00-00:00', true, false, NULL, false, true, false, false, false, false, false, false, NULL, NULL, '2026-08-25 15:43:48.258+00');
+
+
+--
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."comments" ("id", "user_id", "restaurant_id", "body", "created_at", "updated_at") VALUES
+	('0e1e86db-a842-4996-9a6f-7c220f91c144', '54934b98-585d-42ab-ae72-aa61d56b2f83', 'b27e0146-9198-42f0-8970-53a7471df2da', 'asdfasfd', '2026-08-25 15:35:51.304571+00', '2026-08-25 15:35:51.304571+00'),
+	('81a8832f-a75b-4d10-b101-8cb804b17b49', '54934b98-585d-42ab-ae72-aa61d56b2f83', 'b27e0146-9198-42f0-8970-53a7471df2da', 'asdfasfd', '2026-08-25 15:36:01.647054+00', '2026-08-25 15:36:01.647054+00');
+
+
+--
+-- Data for Name: friendships; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."friendships" ("id", "requester_id", "addressee_id", "status", "created_at") VALUES
+	('0d765fab-7fe1-4ffa-8d59-ec1869b7dc62', '54934b98-585d-42ab-ae72-aa61d56b2f83', '190dff60-9072-4abc-a00b-f5f31890da41', 'pending', '2026-08-25 14:59:21.599937+00'),
+	('e1c15c68-566b-445a-bd57-61e64ab2dbf8', '54934b98-585d-42ab-ae72-aa61d56b2f83', '67325ad0-6c07-4da2-b7e7-798cf2cfa2a1', 'accepted', '2026-08-25 14:59:16.526597+00');
+
+
+--
+-- Data for Name: ratings; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."ratings" ("id", "user_id", "restaurant_id", "rating", "created_at", "updated_at") VALUES
+	('5a9dfcd0-b57d-47d1-8cfa-f4d9ae7124ec', '54934b98-585d-42ab-ae72-aa61d56b2f83', 'b27e0146-9198-42f0-8970-53a7471df2da', 5, '2026-08-25 15:35:53.320784+00', '2026-08-25 15:35:57.822686+00'),
+	('741dce95-df2a-4afe-9e61-3b0caf1f9b17', '67325ad0-6c07-4da2-b7e7-798cf2cfa2a1', '12e0a519-21ee-43e1-9e45-1ee750113ee3', 5, '2026-08-25 15:43:49.536649+00', '2026-08-25 15:43:49.536649+00');
 
 
 --
 -- Data for Name: visits; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."visits" ("id", "user_id", "restaurant_id", "visited_at", "rating", "note", "created_at") VALUES
+	('09af9f30-895a-418a-8c3e-80bf1c839c5d', '67325ad0-6c07-4da2-b7e7-798cf2cfa2a1', '65b55338-b590-48a4-b9a1-28263a2ccd47', '2026-08-25', NULL, NULL, '2026-08-25 14:59:47.72372+00');
 
 
 --
@@ -301,7 +337,7 @@ INSERT INTO "public"."profiles" ("id", "display_name", "home_lat", "home_lng", "
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 21, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 26, true);
 
 
 --
@@ -315,6 +351,6 @@ SELECT pg_catalog.setval('"supabase_functions"."hooks_id_seq"', 1, false);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict n211xsAwHDXNHpGGtWgkj6NM362NVeVrHypEhaH4NWGhx47odXQYIRy36CWivJq
+-- \unrestrict KKpZhUv5jFVTrbGU2FonajHfPgBvb7qWjlQ9QkZlu78deiy9I9aNWxXbwFRA29Y
 
 RESET ALL;

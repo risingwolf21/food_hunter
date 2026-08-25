@@ -26,7 +26,7 @@ export const useRestaurant = (placeId: string, userId?: string | null) => useQue
     enabled: !!userId,
     queryFn: async () => {
         const result = await fetchRestaurant(placeId, userId!)
-
+        console.log("fetchRestaurant", result)
         return result
     }
 });

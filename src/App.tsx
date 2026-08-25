@@ -1,32 +1,16 @@
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom'
 import { AppShell } from './components/app-shell'
-import { useAuth } from './contexts/auth-context'
+import { AuthProvider } from './contexts/auth-context'
 import { LoginPage } from './pages/auth/login-page'
 import { RegisterPage } from './pages/auth/register-page'
 import { ListPage } from './pages/list-page'
 import { MapPage } from './pages/map-page'
 import { NotFoundPage } from './pages/not-found-page'
 import { ProfilePage } from './pages/profile-page'
-import { RestaurantPage } from './pages/restaurant-page'
 import { FriendsPage } from './pages/friends-page'
+import { FriendsActivityPage } from './pages/friends-activity-page'
+import { RestaurantPageProvider } from './pages/restaurant-page-provider'
 
-function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user, isLoading } = useAuth()
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-svh items-center justify-center">
-        <div className="size-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />
-  }
-
-  return <>{children}</>
-}
 
 const router = createHashRouter([
   {
@@ -44,9 +28,9 @@ const router = createHashRouter([
   {
     path: '/',
     element: (
-      <AuthGuard>
+      <AuthProvider>
         <AppShell />
-      </AuthGuard>
+      </AuthProvider>
     ),
     children: [
       {
@@ -58,6 +42,10 @@ const router = createHashRouter([
         element: <ListPage />,
       },
       {
+        path: '/feed',
+        element: <FriendsActivityPage />,
+      },
+      {
         path: '/profile',
         element: <ProfilePage />,
       },
@@ -66,15 +54,14 @@ const router = createHashRouter([
         element: <FriendsPage />,
       },
       {
+        path: 'restaurant/:restaurantId',
+        element: <RestaurantPageProvider />,
+      },
+      {
         path: '*',
         element: <Navigate to="/map" replace />,
       },
     ],
-  },
-
-  {
-    path: 'restaurant/:restaurantId',
-    element: <RestaurantPage />,
   },
   {
     path: '*',

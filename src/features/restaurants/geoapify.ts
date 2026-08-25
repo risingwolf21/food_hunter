@@ -120,6 +120,43 @@ export interface OpeningHourRule {
   times: string
 }
 
+export async function ensureRestaurant(place: PlaceDetail): Promise<string> {
+  const { data, error } = await supabase
+    .from("restaurants")
+    .upsert(
+      {
+        place_id: place.placeId,
+        name: place.name,
+        lat: place.lat,
+        lng: place.lng,
+        address: place.address,
+        cuisine: place.cuisine,
+        phone: place.phone,
+        website: place.website,
+        opening_hours: place.opening_hours_orig,
+        wheelchair_accessible: place.wheelchair?.accessible ?? null,
+        wheelchair_limited: place.wheelchair?.limited ?? null,
+        wheelchair_description: place.wheelchair?.description ?? null,
+        internet_access: place.amenities.some((a) => a.label === "WLAN"),
+        outdoor_seating: place.amenities.some((a) => a.label === "Außenbereich"),
+        takeaway: place.amenities.some((a) => a.label === "Zum Mitnehmen"),
+        delivery: place.amenities.some((a) => a.label === "Lieferung"),
+        diet_vegan: place.diet.includes("Vegan"),
+        diet_vegetarian: place.diet.includes("Vegetarisch"),
+        diet_halal: place.diet.includes("Halal"),
+        diet_kosher: place.diet.includes("Koscher"),
+        payment_options: place.paymentOptions.length ? place.paymentOptions : null,
+        last_synced_at: new Date().toISOString(),
+      },
+      { onConflict: "place_id" }
+    )
+    .select("id")
+    .single()
+
+  if (error || !data) throw new Error(error?.message ?? "Restaurant konnte nicht gespeichert werden")
+  return data.id
+}
+
 export function parseOsmOpeningHours(rawHours?: string | null): OpeningHourRule[] {
   if (!rawHours) return []
 
@@ -254,7 +291,9 @@ export async function fetchNearbyRestaurants(
 }
 
 
-export function parseGeoapifyPlaceDetails(json: unknown, visited: { restaurants: { place_id: string, id: string } } | null): PlaceDetail | null {
+export function parseGeoapifyPlaceDetails(json: unknown,
+  restaurantId: string | null,
+  visited: boolean): PlaceDetail | null {
   const data = json as Partial<GeoapifyDetailsResponse>
   const feature = data?.features?.[0]
   const p = feature?.properties
@@ -288,7 +327,7 @@ export function parseGeoapifyPlaceDetails(json: unknown, visited: { restaurants:
 
 
   return {
-    restaurantId: visited?.restaurants?.id ?? null,
+    restaurantId: restaurantId,
     placeId: p.place_id,
     name: p.name,
     address: p.address_line2 ?? p.formatted,
@@ -305,7 +344,7 @@ export function parseGeoapifyPlaceDetails(json: unknown, visited: { restaurants:
     diet,
     paymentOptions,
     timezone: p.timezone?.name ?? null,
-    visited: visited !== null
+    visited: visited
   }
 }
 
@@ -325,24 +364,41 @@ export async function fetchRestaurant(
     headers: { "Access-Control-Allow-Origin": "*" },
   })
 
-  const fetchVisits = supabase
-    .from("visits")
-    .select("id, restaurant_id, restaurants!inner(place_id, id)")
-    .eq("user_id", userId)
-    .eq("restaurants.place_id", placeId)
+  const fetchRestaurantRow = supabase
+    .from("restaurants")
+    .select("*")
+    .eq("place_id", placeId)
     .maybeSingle()
 
-  const [response, visitsResponse] = await Promise.all([fetchGeoapify, fetchVisits])
+  const [response, restaurantRowResponse] = await Promise.all([fetchGeoapify, fetchRestaurantRow])
 
-  if (!response.ok) {
-    throw new Error(`Geoapify-Anfrage fehlgeschlagen: ${response.status}`)
-  }
-  if (visitsResponse.error) {
-    throw new Error(visitsResponse.error.message)
+  if (!response.ok) throw new Error(`Geoapify-Anfrage fehlgeschlagen: ${response.status}`)
+  if (restaurantRowResponse.error) throw new Error(restaurantRowResponse.error.message)
+
+  const restaurantId = restaurantRowResponse.data?.id ?? null
+  let visited = false
+
+  if (restaurantId) {
+    const { data: visit, error: visitError } = await supabase
+      .from("visits")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("restaurant_id", restaurantId)
+      .maybeSingle()
+    if (visitError) throw new Error(visitError.message)
+    visited = visit !== null
   }
 
   const json = await response.json()
-  return parseGeoapifyPlaceDetails(json, visitsResponse.data)
+  const placeDetails = parseGeoapifyPlaceDetails(json, restaurantId, visited)
+  if (placeDetails) {
+    const restaurantId = await ensureRestaurant(placeDetails)
+    return {
+      ...placeDetails,
+      restaurantId
+    }
+  }
+  return placeDetails
 }
 
 /** Haversine-Distanz in Metern zwischen zwei Koordinaten. */
@@ -373,45 +429,11 @@ export async function upsertRestaurantAndCreateVisit(userId: string, place: Plac
     return { restaurantId: place.restaurantId, visitId: null, place }
   }
 
-  const { data: restaurant, error: upsertError } = await supabase
-    .from("restaurants")
-    .upsert(
-      {
-        place_id: place.placeId,
-        name: place.name,
-        lat: place.lat,
-        lng: place.lng,
-        address: place.address,
-        cuisine: place.cuisine,
-        phone: place.phone,
-        website: place.website,
-        opening_hours: place.opening_hours_orig,
-        wheelchair_accessible: place.wheelchair?.accessible ?? null,
-        wheelchair_limited: place.wheelchair?.limited ?? null,
-        wheelchair_description: place.wheelchair?.description ?? null,
-        internet_access: place.amenities.some((a) => a.label === "WLAN"),
-        outdoor_seating: place.amenities.some((a) => a.label === "Außenbereich"),
-        takeaway: place.amenities.some((a) => a.label === "Zum Mitnehmen"),
-        delivery: place.amenities.some((a) => a.label === "Lieferung"),
-        diet_vegan: place.diet.includes("Vegan"),
-        diet_vegetarian: place.diet.includes("Vegetarisch"),
-        diet_halal: place.diet.includes("Halal"),
-        diet_kosher: place.diet.includes("Koscher"),
-        payment_options: place.paymentOptions.length ? place.paymentOptions : null,
-        last_synced_at: new Date().toISOString(),
-      },
-      { onConflict: "place_id" }
-    )
-    .select("id")
-    .single()
-
-  if (upsertError || !restaurant) {
-    throw new Error(upsertError?.message ?? "Restaurant konnte nicht gespeichert werden")
-  }
+  const restaurantId = await ensureRestaurant(place)
 
   const { data: visit, error: visitError } = await supabase
     .from("visits")
-    .insert({ user_id: userId, restaurant_id: restaurant.id })
+    .insert({ user_id: userId, restaurant_id: restaurantId })
     .select("id")
     .single()
 
@@ -419,6 +441,6 @@ export async function upsertRestaurantAndCreateVisit(userId: string, place: Plac
     throw new Error(visitError?.message ?? "Besuch konnte nicht gespeichert werden")
   }
 
-  return { restaurantId: restaurant.id, visitId: visit.id, place }
+  return { restaurantId: restaurantId, visitId: visit.id, place }
 
 }

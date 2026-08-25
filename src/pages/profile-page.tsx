@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
+import { useApplication } from "@/contexts/application-context"
 import { useAuth } from "@/contexts/auth-context"
 import { HomeAddressEditor } from "@/features/profile/HomeAddressEditor"
 import { VisitStatsCard } from "@/features/profile/VisitStatsCard"
@@ -10,7 +11,8 @@ import { useProfile, useUpdateProfileName } from "@/tanstack/profile"
 import { useState } from "react"
 
 export const ProfilePage = () => {
-    const { session, signOut } = useAuth()
+    const { signOut } = useApplication()
+    const { session } = useAuth()
 
     const { data: profile, isLoading } = useProfile();
 

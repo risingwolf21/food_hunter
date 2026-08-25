@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { Toolbar } from "@base-ui/react/toolbar"
-import { Map, List, User, Users } from "lucide-react"
+import { Map, User, Users, Newspaper } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const TABS = [
@@ -10,9 +10,9 @@ const TABS = [
         icon: Map
     },
     { 
-        to: "list", 
-        label: "Liste", 
-        icon: List 
+        to: "feed", 
+        label: "Feed", 
+        icon: Newspaper 
     },
     { 
         to: "friends", 

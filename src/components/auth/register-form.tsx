@@ -1,14 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { z } from 'zod'
 
-import { useAuth } from '@/contexts/auth-context'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useApplication } from '@/contexts/application-context'
 
 const registerSchema = z.object({
   full_name: z.string().min(2, 'Name must be at least 2 characters').max(80),
@@ -19,7 +19,7 @@ const registerSchema = z.object({
 type RegisterValues = z.infer<typeof registerSchema>
 
 export function RegisterForm() {
-  const { signUp } = useAuth()
+  const { signUp } = useApplication()
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
 

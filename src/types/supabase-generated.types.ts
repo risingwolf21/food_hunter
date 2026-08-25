@@ -374,6 +374,7 @@ export type Database = {
           friend_id: string
           friend_username: string
           occurred_at: string
+          place_id: string
           rating: number
           restaurant_id: string
           restaurant_name: string

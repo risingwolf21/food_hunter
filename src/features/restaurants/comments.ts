@@ -12,9 +12,11 @@ interface CommentRow {
     public_profiles: { username: string | null } | null
 }
 
-export const useComments = (restaurantId: string) => useQuery({
+export const useComments = (restaurantId: string | null) => useQuery({
     queryKey: ["comments", restaurantId],
+    enabled: !!restaurantId,
     queryFn: async () => {
+        if (!restaurantId) return []
         const { data, error } = await supabase
             .from("comments")
             .select("id, user_id, restaurant_id, body, created_at, updated_at, public_profiles(username)")
@@ -37,18 +39,23 @@ export const useComments = (restaurantId: string) => useQuery({
     staleTime: 2 * 60 * 1000, // Kommentare ändern sich eher als Restaurant-Stammdaten, aber nicht sekündlich
 })
 
-export const useAddComment = (restaurantId: string) => useMutation({
+export const useAddComment = (restaurantId: string | null) => useMutation({
     mutationFn: async ({ userId, body }: { userId: string; body: string }) => {
+        if (!restaurantId) throw new Error("RestaurantID was undefined")
+
         const { error } = await supabase.from("comments").insert({ user_id: userId, restaurant_id: restaurantId, body })
         if (error) throw new Error(error.message)
     },
     onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["comments", restaurantId] })
     },
+    onError: (error) => console.log(error)
 })
 
-export const useDeleteComment = (restaurantId: string) => useMutation({
+export const useDeleteComment = (restaurantId?: string | null) => useMutation({
     mutationFn: async (commentId: string) => {
+        if (!restaurantId) throw new Error("RestaurantID was undefined")
+
         const { error } = await supabase.from("comments").delete().eq("id", commentId)
         if (error) throw new Error(error.message)
     },
