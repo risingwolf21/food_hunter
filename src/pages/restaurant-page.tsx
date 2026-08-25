@@ -2,6 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
+import { useComments, useAddComment, useDeleteComment } from "@/features/restaurants/comments";
+import { useRatingSummary, useMyRating, useUpsertRating } from "@/features/restaurants/reviews";
 import { useMarkVisited, useRestaurant } from "@/tanstack/restaurants";
 import {
     Accessibility,
@@ -11,9 +13,12 @@ import {
     Globe,
     HousePlug,
     MapPin,
+    MessageSquare,
     Phone,
-    Star
+    Star,
+    Trash2
 } from "lucide-react";
+import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 export function RestaurantPage() {
 
@@ -27,6 +32,22 @@ export function RestaurantPage() {
     const markVisited = useMarkVisited(user.id)
 
     const { data: restaurant, isLoading, error } = useRestaurant(restaurantId, user?.id)
+
+    const { data: ratingSummary } = useRatingSummary(restaurantId)
+    const { data: myRating } = useMyRating(user.id, restaurantId)
+    const upsertRating = useUpsertRating(user.id, restaurantId)
+
+    const { data: comments } = useComments(restaurantId)
+    const addComment = useAddComment(restaurantId)
+    const deleteComment = useDeleteComment(restaurantId)
+    const [commentText, setCommentText] = useState("")
+
+    function handleAddComment() {
+        const body = commentText.trim()
+        if (!body || !user) return
+        addComment.mutate({ userId: user.id, body })
+        setCommentText("")
+    }
 
     return (
         <div className="dvh-full">
@@ -55,6 +76,15 @@ export function RestaurantPage() {
                                     <MapPin className="mt-0.5 size-4 shrink-0" />
                                     {restaurant.address}
                                 </p>
+                                {ratingSummary && ratingSummary.ratingCount > 0 && (
+                                    <p className="flex items-center gap-1 text-sm">
+                                        <Star className="size-4 fill-primary text-primary" />
+                                        <span className="font-medium">{ratingSummary.avgRating}</span>
+                                        <span className="text-muted-foreground">
+                                            ({ratingSummary.ratingCount} {ratingSummary.ratingCount === 1 ? "Bewertung" : "Bewertungen"})
+                                        </span>
+                                    </p>
+                                )}
                             </div>
 
                             <Button variant={"outline"} onClick={() => markVisited.mutate(restaurant)}>
@@ -188,6 +218,73 @@ export function RestaurantPage() {
                                 </CardContent>
                             </Card>
                         }
+
+                        <Card className="py-0">
+                            <CardContent className="space-y-2 px-4 py-3">
+                                <p className="text-sm font-medium">Deine Bewertung</p>
+                                <div className="flex gap-1">
+                                    {[1, 2, 3, 4, 5].map((n) => (
+                                        <button
+                                            key={n}
+                                            type="button"
+                                            onClick={() => upsertRating.mutate(n)}
+                                            disabled={upsertRating.isPending}
+                                        >
+                                            <Star
+                                                className={
+                                                    myRating !== null && myRating !== undefined && n <= myRating
+                                                        ? "size-6 fill-primary text-primary"
+                                                        : "size-6 text-muted-foreground"
+                                                }
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="py-0">
+                            <CardContent className="space-y-3 px-4 py-3">
+                                <p className="flex items-center gap-1.5 text-sm font-medium">
+                                    <MessageSquare className="size-4 text-muted-foreground" />
+                                    Kommentare
+                                </p>
+
+                                <div className="flex gap-2">
+                                    <input
+                                        value={commentText}
+                                        onChange={(e) => setCommentText(e.target.value)}
+                                        placeholder="Kommentar schreiben…"
+                                        className="flex-1 rounded-md border px-3 py-1.5 text-sm"
+                                    />
+                                    <Button size="sm" onClick={handleAddComment} disabled={addComment.isPending}>
+                                        Senden
+                                    </Button>
+                                </div>
+
+                                <div className="space-y-2">
+                                    {comments?.length === 0 && (
+                                        <p className="text-sm text-muted-foreground">Noch keine Kommentare.</p>
+                                    )}
+                                    {comments?.map((c) => (
+                                        <div key={c.id} className="flex items-start justify-between gap-2 border-t pt-2 text-sm">
+                                            <div>
+                                                <p className="font-medium">{c.username ?? "Jemand"}</p>
+                                                <p className="text-muted-foreground">{c.body}</p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {new Date(c.createdAt).toLocaleDateString("de-DE")}
+                                                </p>
+                                            </div>
+                                            {c.userId === user.id && (
+                                                <button onClick={() => deleteComment.mutate(c.id)}>
+                                                    <Trash2 className="size-4 text-muted-foreground hover:text-destructive" />
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
                     </>
                 )}
             </div>
