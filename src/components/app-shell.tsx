@@ -3,8 +3,8 @@ import { BottomNav } from "./bottom-navigation"
 
 export const AppShell = () => {
     return (
-        <div className='flex min-h-dvh w-full'>
-            <div className='flex flex-1 flex-col size-full'>
+        <div className="flex h-dvh w-full flex-col overflow-hidden">
+            <div className="min-h-0 flex-1">
                 <Outlet />
             </div>
             <BottomNav />

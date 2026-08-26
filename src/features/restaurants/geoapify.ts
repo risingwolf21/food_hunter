@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase"
+import type { RestaurantFilters } from "./RestaurantFilterSheet"
 
 export interface GeoapifyResponse {
   type: "FeatureCollection"
@@ -265,13 +266,12 @@ const API_KEY = import.meta.env.VITE_GEOAPIFY_API_KEY
 export async function fetchNearbyRestaurants(
   lat: number,
   lng: number,
-  radiusMeters: number,
+  filters: RestaurantFilters,
   userId: string
 ): Promise<Restaurant[]> {
 
-  // ?categories=catering&filter=circle:11.5754895,48.1374742,5000&bias=proximity:11.5754895,48.1374742&lang=de&limit=20&apiKey=YOUR_API_KEY
-
-  const url = `${GEOPAIFY_PLACES_URL}?categories=catering&filter=circle:${lng},${lat},${radiusMeters}&bias=proximity:${lng},${lat}&limit=100&apiKey=${API_KEY}`
+  const categories = filters.cuisines.length === 0 ? 'catering' : filters.cuisines.map(x => 'catering.restaurant.'+x).join(",")
+  const url = `${GEOPAIFY_PLACES_URL}?categories=${categories}&filter=circle:${lng},${lat},${filters.radiusMeters}&bias=proximity:${lng},${lat}&limit=200&apiKey=${API_KEY}`
 
   const response = await fetch(url, {
     method: "GET",

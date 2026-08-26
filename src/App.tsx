@@ -3,13 +3,13 @@ import { AppShell } from './components/app-shell'
 import { AuthProvider } from './contexts/auth-context'
 import { LoginPage } from './pages/auth/login-page'
 import { RegisterPage } from './pages/auth/register-page'
-import { ListPage } from './pages/list-page'
-import { MapPage } from './pages/map-page'
+import { NearbyRestaurants } from './pages/nearby-restaurants-page'
 import { NotFoundPage } from './pages/not-found-page'
 import { ProfilePage } from './pages/profile-page'
 import { FriendsPage } from './pages/friends-page'
 import { FriendsActivityPage } from './pages/friends-activity-page'
 import { RestaurantPageProvider } from './pages/restaurant-page-provider'
+import { ProfileActivityPage } from './pages/profile-activity-page'
 
 
 const router = createHashRouter([
@@ -35,11 +35,7 @@ const router = createHashRouter([
     children: [
       {
         path: '/map',
-        element: <MapPage />,
-      },
-      {
-        path: '/list',
-        element: <ListPage />,
+        element: <NearbyRestaurants />,
       },
       {
         path: '/feed',
@@ -50,11 +46,15 @@ const router = createHashRouter([
         element: <ProfilePage />,
       },
       {
+        path: '/profile/activity',
+        element: <ProfileActivityPage />,
+      },
+      {
         path: '/friends',
         element: <FriendsPage />,
       },
       {
-        path: 'restaurant/:restaurantId',
+        path: '/restaurant/:restaurantId',
         element: <RestaurantPageProvider />,
       },
       {

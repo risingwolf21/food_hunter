@@ -6,6 +6,7 @@ import { ApplicationProvider } from "./contexts/application-context.tsx"
 import "./index.css"
 import DialogsProvider from "./lib/dialogs.tsx"
 import queryClient from "./lib/queryclient.ts"
+import '@/lib/i18n';
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -17,6 +17,7 @@ interface AppBarProps extends React.HTMLAttributes<HTMLElement> {
   actions?: React.ReactNode;
   primaryAction?: React.ReactNode | "back" | "default";
   navigateBackPath?: string;
+  tabs?: React.ReactNode;
   withScrollEffect?: boolean;
   user?: Tables<"profiles">; // Ersetze User durch deinen echten Typen
 }
@@ -33,6 +34,7 @@ export function AppBar({
   actions,
   withScrollEffect = true,
   className,
+  tabs,
   ...props
 }: AppBarProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -94,7 +96,9 @@ export function AppBar({
         </div>
 
         <div className="flex items-center justify-end gap-2 lg:w-1/3">
-          {actions}
+          {
+            (!tabs && actions) && actions
+          }
           {user && (
             <Button
               variant="ghost"
@@ -110,6 +114,13 @@ export function AppBar({
           )}
         </div>
       </div>
+
+      {
+        (tabs && actions) && <div className="flex justify-between items-center gap-2 px-4 pb-2">
+          {tabs}
+          {actions}
+        </div>
+      }
     </header>
   );
 }

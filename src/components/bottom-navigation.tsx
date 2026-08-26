@@ -31,7 +31,7 @@ export const BottomNav = () => {
     return (
         <Toolbar.Root
             render={<nav aria-label="Hauptnavigation" />}
-            className="fixed inset-x-0 bottom-0 z-50 border-t bg-background"
+            className="border-t bg-background"
             style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
             <div className="mx-auto flex w-full max-w-md">
