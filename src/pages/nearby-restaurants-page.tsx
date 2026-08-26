@@ -1,4 +1,3 @@
-import { PageLayout } from "@/components/page-layout";
 import { AppBar } from "@/components/ui/appbar";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
