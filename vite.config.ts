@@ -19,8 +19,8 @@ export default defineConfig(({ mode }) => {
         registerType: "autoUpdate",
         includeAssets: ["favicon.svg"],
         manifest: {
-          name: "Besucht",
-          short_name: "Besucht",
+          name: "Food Hunter",
+          short_name: "Food Hunter",
           description: "Restaurants in deiner Nähe entdecken und besuchte markieren",
           theme_color: "#0f172a",
           background_color: "#0f172a",
@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
           // Overpass/OSM-Antworten cachen, damit die zuletzt geladene Liste offline sichtbar bleibt
           runtimeCaching: [
             {
-              urlPattern: /^https:\/\/overpass-api\.de\/.*/,
+              urlPattern: /^https:\/\/api\.geoapify\.com\/.*/,
               handler: "NetworkFirst",
               options: {
                 cacheName: "overpass-cache",

@@ -21,7 +21,7 @@ export const ProfilePage = () => {
     const [username, setUsername] = useState(profile?.display_name ?? "")
 
     return (
-        <div className="mx-auto max-w-md w-full space-y-4 p-4">
+        <div className="mx-auto max-w-md h-full min-h-0 flex-col flex w-full space-y-4 p-4">
             <Card>
                 <CardHeader>
                     <CardTitle>Profil</CardTitle>
