@@ -61,7 +61,6 @@ import {
     Undo2Icon,
     WaypointsIcon,
 } from "lucide-react"
-import { useTheme } from "next-themes"
 import React, {
     Suspense,
     createContext,
