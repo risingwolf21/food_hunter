@@ -11,13 +11,13 @@ export const FriendsActivityPage = () => {
     const { data: activities, isLoading, error } = useFriendActivityFeed()
     const navigate = useNavigate()
 
-    return <div className="flex flex-col h-screen">
+    return <div className="flex flex-1 flex-col">
         <AppBar
             className='!border-b !shadow-sm'
             title="Informationen"
             user={profile!}
         />
-        <main className='flex-1 size-full pb-safe-bottom'>
+        <main className='flex-1 size-full pb-safe-bottom overflow-y-auto'>
             <div className="space-y-2 p-4">
                 {isLoading && <p className="text-sm text-muted-foreground">Lädt…</p>}
                 {error && <p className="text-sm text-destructive">{error.message}</p>}

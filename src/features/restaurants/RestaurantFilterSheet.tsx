@@ -6,6 +6,7 @@ import { Filter, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RESTAURANT_CATEGORIES } from "@/utils"
+import { Separator } from "@/components/ui/separator"
 
 export interface RestaurantFilters {
     radiusMeters: number
@@ -108,6 +109,23 @@ export function RestaurantFilterSheet({ filters, onFiltersChanged, onReset }: Pr
                                 </div>
                                 <Input placeholder="Küche suchen…" value={search} onChange={(e) => setSearch(e.target.value)} />
                                 <div className="max-h-60 space-y-1 overflow-y-auto">
+                                    {
+                                        cuisines.length > 0 && cuisines.map((cuisine) => (
+                                            <label key={cuisine} className="flex items-center gap-2.5 rounded-md px-1.5 py-1.5 text-sm hover:bg-accent">
+                                                <Checkbox.Root
+                                                    checked={true}
+                                                    onCheckedChange={() => toggleCuisine(cuisine)}
+                                                    className="flex size-4 items-center justify-center rounded border data-[checked]:border-primary data-[checked]:bg-primary"
+                                                >
+                                                    <Checkbox.Indicator>
+                                                        <Check className="size-3 text-primary-foreground" />
+                                                    </Checkbox.Indicator>
+                                                </Checkbox.Root>
+                                                <span className="capitalize">{cuisine}</span>
+                                            </label>
+                                        ))
+                                    }
+                                    <Separator />
                                     {visibleCategories.map((cuisine) => {
                                         const checked = cuisines.includes(cuisine)
                                         return (

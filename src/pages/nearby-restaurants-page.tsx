@@ -30,7 +30,7 @@ export function NearbyRestaurants() {
     if (!home)
         return <Navigate to="/profile" />
 
-    return <Tabs defaultValue="map" className="flex h-full min-h-0 flex-col ga-0">
+    return <Tabs defaultValue="map" className="flex size-full min-h-0 flex-col ga-0">
         <AppBar
             className='!border-b !shadow-sm'
             title="Informationen"
@@ -57,10 +57,10 @@ export function NearbyRestaurants() {
                 </TabsTrigger>
             </TabsList>}
         />
-        <TabsContent value={"map"} className="min-h-0 flex-1 pb-safe-bottom" keepMounted>
+        <TabsContent value={"map"} className="min-h-0 min-w-0 flex-1 pb-safe-bottom" keepMounted>
             <RestaurantMapPanel restaurants={restaurants} home={home} />
         </TabsContent>
-        <TabsContent value={"list"} className="min-h-0 flex-1 overflow-y-auto pb-safe-bottom">
+        <TabsContent value={"list"} className="min-h-0 min-w-0 flex-1 overflow-y-auto pb-safe-bottom">
             <RestaurantListPanel restaurants={restaurants} />
         </TabsContent>
     </Tabs >

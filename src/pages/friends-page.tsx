@@ -33,13 +33,13 @@ export const FriendsPage = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col size-full">
       <AppBar
         className='!border-b !shadow-sm'
         title="Freunde"
         user={profile!}
       />
-      <main className='flex-1 size-full pb-safe-bottom'>
+      <main className='flex-1 size-full pb-safe-bottom overflow-y-auto'>
         <div className="px-4 pb-2 pt-4">
           <form onSubmit={handleSearch}>
             <Field orientation="horizontal">

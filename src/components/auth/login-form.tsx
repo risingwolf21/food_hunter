@@ -21,6 +21,7 @@ export function LoginForm() {
   const { signIn } = useApplication()
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -32,7 +33,7 @@ export function LoginForm() {
     const error = await signIn(values.email, values.password)
     setIsSubmitting(false)
     if (error) {
-      toast.error(error.message)
+      setError(error.message)
     } else {
       navigate('/dashboard')
     }
@@ -67,6 +68,9 @@ export function LoginForm() {
             </FormItem>
           )}
         />
+        {
+          error && <p className="text-sm text-destructive">{error}</p>
+        }
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? 'Signing In' : 'Sign In'}
         </Button>

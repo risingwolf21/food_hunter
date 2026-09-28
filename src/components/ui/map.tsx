@@ -237,49 +237,29 @@ function useMapLayersContext() {
     return useContext(MapLayersContext)
 }
 
+const OPENSTREETMAP_URL =
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+
+const OPENSTREETMAP_ATTRIBUTION =
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+
 function MapTileLayer({
-    name = "Default",
-    url,
-    attribution,
-    darkUrl,
-    darkAttribution,
+    name = "OpenStreetMap",
+    url = OPENSTREETMAP_URL,
+    attribution = OPENSTREETMAP_ATTRIBUTION,
     ...props
 }: Partial<TileLayerProps> & {
     name?: string
-    darkUrl?: string
-    darkAttribution?: string
     ref?: Ref<TileLayer>
 }) {
-    const map = useMap()
-    if (map.attributionControl) {
-        map.attributionControl.setPrefix("")
-    }
-
     const context = useContext(MapLayersContext)
-    const DEFAULT_URL =
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
-    const DEFAULT_DARK_URL =
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
-
-    const { resolvedTheme } = useTheme()
-    const resolvedUrl =
-        resolvedTheme === "dark"
-            ? (darkUrl ?? url ?? DEFAULT_DARK_URL)
-            : (url ?? DEFAULT_URL)
-    const resolvedAttribution =
-        resolvedTheme === "dark" && darkAttribution
-            ? darkAttribution
-            : (attribution ??
-                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
 
     useEffect(() => {
-        if (context) {
-            context.registerTileLayer({
-                name,
-                url: resolvedUrl,
-                attribution: resolvedAttribution,
-            })
-        }
+        context?.registerTileLayer({
+            name,
+            url,
+            attribution,
+        })
     }, [context, name, url, attribution])
 
     if (context && context.selectedTileLayer !== name) {
@@ -288,8 +268,8 @@ function MapTileLayer({
 
     return (
         <LeafletTileLayer
-            url={resolvedUrl}
-            attribution={resolvedAttribution}
+            url={url}
+            attribution={attribution}
             {...props}
         />
     )
